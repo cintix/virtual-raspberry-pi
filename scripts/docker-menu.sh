@@ -43,7 +43,7 @@ suggest_tag() {
 }
 
 list_dockerfiles() {
-  find images -type f -name 'Dockerfile.*' | sort
+  find images -type f ! -name '.*' | sort
 }
 
 normalize_mount_path() {
@@ -66,12 +66,12 @@ build_image() {
   mapfile -t files < <(list_dockerfiles)
 
   if [[ ${#files[@]} -eq 0 ]]; then
-    echo "No Dockerfiles found under images/."
+    echo "No build files found under images/."
     return
   fi
 
   echo
-  echo "Select Dockerfile to build:"
+  echo "Select build file to use as Dockerfile:"
   local i=1
   for file in "${files[@]}"; do
     echo "  $i) $file"
@@ -133,7 +133,7 @@ run_image() {
 
   read -r -p "Optional host path to mount at /var/media (leave empty to skip): " mount_path
   local -a mount_args=()
-  if [[ -n "$mount_path" ]]; then
+  if [[ "$mount_path" =~ [^[:space:]] ]]; then
     local mount_path_normalized
     mount_path_normalized="$(normalize_mount_path "$mount_path")"
     mount_args=(-v "${mount_path_normalized}:/var/media")
@@ -174,7 +174,7 @@ while true; do
   echo "==== Container Menu (${ENGINE}) ===="
   echo "1) Build image"
   echo "2) Run image"
-  echo "3) List Dockerfiles"
+  echo "3) List build files"
   echo "0) Exit"
   read -r -p "Choice: " menu
 

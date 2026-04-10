@@ -35,7 +35,7 @@ cls
 echo ==== Container Menu ^(%ENGINE%^) ====
 echo 1^) Build image
 echo 2^) Run image
-echo 3^) List Dockerfiles
+echo 3^) List build files
 echo 0^) Exit
 set /p MENU=Choice: 
 
@@ -49,22 +49,33 @@ pause
 goto main
 
 :list
-call :log "%ENGINE% (list dockerfiles via dir /b /s %BASE_DIR%\images\Dockerfile.*)"
-dir /b /s "%BASE_DIR%\images\Dockerfile.*"
+set "COUNT=0"
+call :log "dir /b /s /a:-d %BASE_DIR%\images"
+for /f "delims=" %%F in ('dir /b /s /a:-d "%BASE_DIR%\images"') do (
+  set "BNAME=%%~nxF"
+  if /i not "!BNAME:~0,1!"=="." (
+    set /a COUNT+=1
+    echo %%F
+  )
+)
+if "%COUNT%"=="0" echo No build files found under images\
 pause
 goto main
 
 :build
 set /a COUNT=0
-call :log "dir /b /s %BASE_DIR%\images\Dockerfile.*"
-for /f "delims=" %%F in ('dir /b /s "%BASE_DIR%\images\Dockerfile.*"') do (
-  set /a COUNT+=1
-  set "FILE[!COUNT!]=%%F"
-  echo !COUNT!^) %%F
+call :log "dir /b /s /a:-d %BASE_DIR%\images"
+for /f "delims=" %%F in ('dir /b /s /a:-d "%BASE_DIR%\images"') do (
+  set "BNAME=%%~nxF"
+  if /i not "!BNAME:~0,1!"=="." (
+    set /a COUNT+=1
+    set "FILE[!COUNT!]=%%F"
+    echo !COUNT!^) %%F
+  )
 )
 
 if "%COUNT%"=="0" (
-  echo No Dockerfiles found under images\
+  echo No build files found under images\
   pause
   goto main
 )
@@ -150,7 +161,9 @@ if %PN% GTR 99 (
 )
 
 set /p MOUNT_RAW=Optional host path to mount at /var/media (leave empty to skip): 
-set "MOUNT_NORM=!MOUNT_RAW:\=/!"
+set "MOUNT_RAW_TRIM="
+for /f "tokens=* delims= " %%A in ("!MOUNT_RAW!") do set "MOUNT_RAW_TRIM=%%A"
+set "MOUNT_NORM=!MOUNT_RAW_TRIM:\=/!"
 set "MOUNT_SPEC="
 if not "!MOUNT_NORM!"=="" set "MOUNT_SPEC=!MOUNT_NORM!:/var/media"
 
