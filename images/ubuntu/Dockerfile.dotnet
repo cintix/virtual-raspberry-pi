@@ -7,7 +7,7 @@ ENV DOTNET_ROOT=/usr/share/dotnet
 ENV PATH=$PATH:/usr/share/dotnet
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    bash ca-certificates tzdata sudo passwd openssh-server \
+    bash bash-completion ca-certificates tzdata sudo passwd openssh-server \
     vim curl wget procps net-tools iproute2 \
     php php-cli php-common locales \
     libicu-dev zlib1g libssl3 libgcc-s1 libstdc++6 \

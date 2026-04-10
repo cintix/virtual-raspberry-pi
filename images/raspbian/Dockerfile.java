@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    bash ca-certificates tzdata sudo passwd openssh-server \
+    bash bash-completion ca-certificates tzdata sudo passwd openssh-server \
     vim curl wget procps net-tools iproute2 \
     php php-cli php-common locales default-jdk \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \

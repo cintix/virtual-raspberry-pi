@@ -8,11 +8,15 @@ Dette repo indeholder flere Dockerfile-varianter til at simulere Raspberry Pi-li
 - `images/debian/`
 - `images/ubuntu/`
 
-Hver mappe har 3 varianter:
+Som udgangspunkt har hver mappe 3 varianter:
 
 - `Dockerfile.base`
 - `Dockerfile.java`
 - `Dockerfile.dotnet`
+
+Ekstra Debian-variant:
+
+- `images/debian/Dockerfile.lasteste` (baseret paa `debian:13` / Trixie)
 
 ## Faste standarder i alle images
 
