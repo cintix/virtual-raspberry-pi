@@ -1,6 +1,7 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
-cd /d "%~dp0\.."
+for %%I in ("%~dp0..") do set "BASE_DIR=%%~fI"
+cd /d "%BASE_DIR%"
 
 set "ENGINE="
 where docker >nul 2>nul
@@ -48,15 +49,15 @@ pause
 goto main
 
 :list
-call :log "%ENGINE% (list dockerfiles via dir /b /s images\Dockerfile.*)"
-dir /b /s images\Dockerfile.*
+call :log "%ENGINE% (list dockerfiles via dir /b /s %BASE_DIR%\images\Dockerfile.*)"
+dir /b /s "%BASE_DIR%\images\Dockerfile.*"
 pause
 goto main
 
 :build
 set /a COUNT=0
-call :log "dir /b /s images\Dockerfile.*"
-for /f "delims=" %%F in ('dir /b /s images\Dockerfile.*') do (
+call :log "dir /b /s %BASE_DIR%\images\Dockerfile.*"
+for /f "delims=" %%F in ('dir /b /s "%BASE_DIR%\images\Dockerfile.*"') do (
   set /a COUNT+=1
   set "FILE[!COUNT!]=%%F"
   echo !COUNT!^) %%F
@@ -80,8 +81,9 @@ for %%A in ("!SELECTED!") do (
   set "VARIANT=%%~xA"
   set "PARENT=%%~dpA"
 )
+if "!PARENT:~-1!"=="\" set "PARENT=!PARENT:~0,-1!"
 set "VARIANT=!VARIANT:.=!"
-for %%B in ("!PARENT:~0,-1!") do set "FAMILY=%%~nxB"
+for %%B in ("!PARENT!") do set "FAMILY=%%~nxB"
 set /a RAND=%RANDOM% %% 9000 + 1000
 set "SUGGEST=clone/!FAMILY!-!VARIANT!-!RAND!"
 
