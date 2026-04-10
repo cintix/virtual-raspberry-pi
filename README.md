@@ -41,7 +41,7 @@ Begge scripts kan:
 
 Prefix + faste suffixes:
 
-- `80` -> `${prefix}89`
+- `80` -> `${prefix}80`
 - `8080` -> `${prefix}88`
 - `22` -> `${prefix}22`
 - `3306` -> `${prefix}33`
