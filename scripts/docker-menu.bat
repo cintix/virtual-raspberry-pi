@@ -152,7 +152,7 @@ set "MOUNT_NORM=!MOUNT_RAW:\=/!"
 set "MOUNT_SPEC="
 if not "!MOUNT_NORM!"=="" set "MOUNT_SPEC=!MOUNT_NORM!:/var/media"
 
-set "P80=%PREFIX%89"
+set "P80=%PREFIX%80"
 set "P8080=%PREFIX%88"
 set "P22=%PREFIX%22"
 set "P3306=%PREFIX%33"

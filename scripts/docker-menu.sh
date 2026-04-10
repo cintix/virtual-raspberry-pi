@@ -139,7 +139,7 @@ run_image() {
     mount_args=(-v "${mount_path_normalized}:/var/media")
   fi
 
-  local p80="${prefix}89"
+  local p80="${prefix}80"
   local p8080="${prefix}88"
   local p22="${prefix}22"
   local p3306="${prefix}33"
